@@ -1,4 +1,4 @@
-pipeline  {
+pipeline {
     agent any
 
     stages {
@@ -9,15 +9,14 @@ pipeline  {
                     reuseNode true
                 }
             }
-        
-            steps {
-            sh '''
-                ls -la
-                node -v
-                npm -v
-                npm ci
-                npm run build
 
+            steps {
+                sh '''
+                    ls -la
+                    node -v
+                    npm -v
+                    npm ci
+                    npm run build
                 '''
             }
         }
