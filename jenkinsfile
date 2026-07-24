@@ -2,28 +2,29 @@ pipeline {
     agent any
 
     stages {
-        // stage('Build') {
-        //     agent {
-        //         docker {
-        //             image 'node:18-alpine'
-        //             reuseNode true
-        //         }
-        //     }
-
-        //     steps {
-        //         sh '''
-        //             ls -la
-        //             node -v
-        //             npm -v
-        //             npm ci
-        //             npm run build 
-        //             npm test
-        //         '''
-        //     }
-        // }
+     
 
         stage('Test'){
             parallel{
+                   stage('Build') {
+                    agent {
+                        docker {
+                            image 'node:18-alpine'
+                            reuseNode true
+                        }
+                    }
+
+                steps {
+                    sh '''
+                        ls -la
+                        node -v
+                        npm -v
+                        npm ci
+                        npm run build 
+                        npm test
+                    '''
+                }
+                 }
                stage('Unit Test') {
                     agent {
                         docker {
