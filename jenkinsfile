@@ -99,15 +99,13 @@ pipeline {
 
         stage('Deploy') {
             agent {
-            docker {
+                docker {
                     image 'node:18'
                     reuseNode true
                 }
             }
-        }
-    }
 
-        steps {
+            steps {
             
             sh '''
             node --version
@@ -124,5 +122,7 @@ pipeline {
                 --dir=build \
                 --prod
         '''
+            }       
+        }
     }
 }
