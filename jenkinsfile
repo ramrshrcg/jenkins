@@ -97,7 +97,34 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+         stage('Deploy Staging') {
+            // agent {
+            //     docker {
+            //         image 'node:18'
+            //         reuseNode true
+            //     }
+
+            // }
+
+            steps {
+                sh '''
+                    node --version
+                    npm --version
+                    netlify --version
+
+                    echo "Deploying to staging site ID: $NETLIFY_SITE_ID"
+
+                    netlify deploy \
+                        --dir=build \
+                        --prod \
+                        --site="$NETLIFY_SITE_ID" \
+                        --auth="$NETLIFY_AUTH_TOKEN"
+                '''
+            }   
+        }
+
+
+        stage('Deploy prod') {
             // agent {
             //     docker {
             //         image 'node:18'
@@ -116,7 +143,6 @@ pipeline {
 
                     netlify deploy \
                         --dir=build \
-                        --prod \
                         --site="$NETLIFY_SITE_ID" \
                         --auth="$NETLIFY_AUTH_TOKEN"
                 '''
@@ -131,7 +157,7 @@ pipeline {
             }
 
             environment{
-                CI_ENVIRONMENT_URL='https://sunny-capybara-d89dba.netlify.app'
+                CI_ENVIRONMENT_URL='https://sunny-capybara-d89dba.netlify.app/'
             }
 
             steps {
@@ -151,7 +177,7 @@ pipeline {
                         reportFiles: 'index.html',
                         reportName: 'Playwright E2E',
                         reportTitles: '',
-                        useWrapperFileDirectly: true
+                        useWrapperFileDirectly:  true
                     ])
                 }
             }
